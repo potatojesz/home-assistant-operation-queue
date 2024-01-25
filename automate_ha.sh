@@ -4,7 +4,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Ścieżka do repozytorium
-REPO_PATH="$SCRIPT_DIR/home-assistant-operation-queue"
+REPO_PATH="$SCRIPT_DIR"
 
 # Ścieżka do pliku queue
 QUEUE_FILE="$REPO_PATH/queue"
