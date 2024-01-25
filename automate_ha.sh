@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 # Ścieżka do katalogu, gdzie znajduje się skrypt
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
