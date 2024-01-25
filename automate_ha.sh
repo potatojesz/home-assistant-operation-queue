@@ -21,7 +21,7 @@ GIT_PASSWORD="$1"
 git_pull() {
     expect -c "
     spawn git pull
-    expect \"Password for 'your_username':\" 
+    expect \"Enter passphrase for key '/root/.ssh/id_rsa':\" 
     send \"$GIT_PASSWORD\n\"
     interact
     "
@@ -30,7 +30,7 @@ git_pull() {
 git_push() {
     expect -c "
     spawn git push
-    expect \"Password for 'your_username':\" 
+    expect \"Enter passphrase for key '/root/.ssh/id_rsa':\" 
     send \"$GIT_PASSWORD\n\"
     interact
     "
