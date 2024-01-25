@@ -1,1 +1,7 @@
+ przykładowa linia: curl -X GET http://localhost:8123/api/webhook/automatics-off
+
+mozliwe opcje:
+- automatics-off
+- automatics-on
+- roborock
 
