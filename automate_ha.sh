@@ -9,25 +9,35 @@ REPO_PATH="$SCRIPT_DIR"
 # Ścieżka do pliku queue
 QUEUE_FILE="$REPO_PATH/queue"
 
+# Plik dziennika
+LOG_FILE="$REPO_PATH/../script_log.txt"
+
 # Przejście do katalogu z repozytorium
 cd "$REPO_PATH" || exit
 
+# Logowanie do pliku
+echo "$(date +"%Y-%m-%d %H:%M:%S") - Rozpoczęcie skryptu" >> "$LOG_FILE"
+
 # Pobranie najnowszej wersji repozytorium
-git pull
+git pull >> "$LOG_FILE" 2>&1
 
 # Pętla do przetwarzania linii w pliku queue
 while IFS= read -r line; do
-    echo "$(date +"%Y-%m-%d %H:%M:%S") - Wykonanie zapytania CURL GET dla: $line"
-    echo "$(date +"%Y-%m-%d %H:%M:%S") - curl -X GET http://localhost:8123/api/webhook/$line"
-
-    # Wykonanie zapytania CURL GET dla każdej linii w pliku queue
-    curl -X GET "http://localhost:8123/api/webhook/$line"
+    if [[ -n $line ]]; then
+        echo "$(date +"%Y-%m-%d %H:%M:%S") - Wykonanie komendy: $line" >> "$LOG_FILE"
+        eval "$line" >> "$LOG_FILE" 2>&1
+    else
+        echo "$(date +"%Y-%m-%d %H:%M:%S") - Pusta linia w pliku queue - pominięto" >> "$LOG_FILE"
+    fi
 done < "$QUEUE_FILE"
 
 # Wyczyszczenie pliku queue
 > "$QUEUE_FILE"
 
 # Zakomitowanie zmian do repozytorium
-git add .
-git commit -m "Automatyczne zaciągnięcie i przetworzenie kolejki"
-git push
+git add . >> "$LOG_FILE" 2>&1
+git commit -m "Automatyczne zaciągnięcie i przetworzenie kolejki" >> "$LOG_FILE" 2>&1
+git push >> "$LOG_FILE" 2>&1
+
+# Logowanie zakończenia skryptu
+echo "$(date +"%Y-%m-%d %H:%M:%S") - Zakończenie skryptu" >> "$LOG_FILE"
