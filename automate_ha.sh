@@ -36,7 +36,7 @@ while IFS= read -r line; do
 done < "$QUEUE_FILE"
 
 # Wyczyszczenie pliku queue
-#> "$QUEUE_FILE"
+> "$QUEUE_FILE"
 
 # Zakomitowanie zmian do repozytorium
 git add . >> "$LOG_FILE" 2>&1
