@@ -10,7 +10,7 @@ REPO_PATH="$SCRIPT_DIR"
 QUEUE_FILE="$REPO_PATH/queue"
 
 # Plik dziennika
-LOG_FILE="$REPO_PATH/../script_log.txt"
+LOG_FILE="/var/log/automate_ha.log"
 
 # Przejście do katalogu z repozytorium
 cd "$REPO_PATH" || exit
