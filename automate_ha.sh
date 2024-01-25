@@ -24,16 +24,12 @@ git pull >> "$LOG_FILE" 2>&1
 
 # Pętla do przetwarzania linii w pliku queue
 while IFS= read -r line; do
-    if [[ -n $line ]]; then
-        echo "$(date +"%Y-%m-%d %H:%M:%S") - Wykonanie komendy: $line" >> "$LOG_FILE"
-        eval "$line" >> "$LOG_FILE" 2>&1
-    else
-        echo "$(date +"%Y-%m-%d %H:%M:%S") - Pusta linia w pliku queue - pominięto" >> "$LOG_FILE"
-    fi
+    # Wykonanie zapytania CURL GET dla każdej linii w pliku queue
+    curl -X GET "http://localhost:8123/api/webhook/$line"
 done < "$QUEUE_FILE"
 
 # Wyczyszczenie pliku queue
-> "$QUEUE_FILE"
+#> "$QUEUE_FILE"
 
 # Zakomitowanie zmian do repozytorium
 git add . >> "$LOG_FILE" 2>&1
