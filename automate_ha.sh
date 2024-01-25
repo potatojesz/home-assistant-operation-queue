@@ -15,11 +15,32 @@ LOG_FILE="/var/log/automate_ha.log"
 # Przejście do katalogu z repozytorium
 cd "$REPO_PATH" || exit
 
+# Hasło przekazywane jako argument
+GIT_PASSWORD="$1"
+
+git_pull() {
+    expect -c "
+    spawn git pull
+    expect \"Password for 'your_username':\" 
+    send \"$GIT_PASSWORD\n\"
+    interact
+    "
+}
+
+git_push() {
+    expect -c "
+    spawn git push
+    expect \"Password for 'your_username':\" 
+    send \"$GIT_PASSWORD\n\"
+    interact
+    "
+}
+
 # Logowanie do pliku
 echo "$(date +"%Y-%m-%d %H:%M:%S") - Rozpoczęcie skryptu" >> "$LOG_FILE"
 
 # Pobranie najnowszej wersji repozytorium
-git pull >> "$LOG_FILE" 2>&1
+git_pull >> "$LOG_FILE" 2>&1
 
 # Sprawdzenie i usunięcie białych znaków i specjalnych znaków na końcach linii w pliku queue
 sed -i 's/[[:space:]]*$//' "$QUEUE_FILE"
@@ -41,7 +62,7 @@ done < "$QUEUE_FILE"
 # Zakomitowanie zmian do repozytorium
 git add . >> "$LOG_FILE" 2>&1
 git commit -m "Automatyczne zaciągnięcie i przetworzenie kolejki" >> "$LOG_FILE" 2>&1
-git push >> "$LOG_FILE" 2>&1
+git_push >> "$LOG_FILE" 2>&1
 
 # Logowanie zakończenia skryptu
 echo "$(date +"%Y-%m-%d %H:%M:%S") - Zakończenie skryptu" >> "$LOG_FILE"
