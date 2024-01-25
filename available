@@ -1,5 +1,7 @@
  przykładowa linia: curl -X GET http://localhost:8123/api/webhook/auto-off
 
+curl -X GET http://localhost:8123/api/webhook/auto-off
+
 mozliwe opcje:
 - auto-off
 - auto-on
