@@ -17,6 +17,7 @@ git pull
 
 # Pętla do przetwarzania linii w pliku queue
 while IFS= read -r line; do
+    echo "$(date +"%Y-%m-%d %H:%M:%S") - Wykonanie zapytania CURL GET dla: $line"
     # Wykonanie zapytania CURL GET dla każdej linii w pliku queue
     curl -X GET "http://localhost:8123/api/webhook/$line"
 done < "$QUEUE_FILE"
